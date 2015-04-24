@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 public class TempLightActivity extends AbstractIOIOActivity {
 	
-	private final int TMP36_PIN = 34;
 	private final int PHOTOCELL_PIN = 35;
 	
 	TextView mLightTextView;
@@ -32,13 +31,11 @@ public class TempLightActivity extends AbstractIOIOActivity {
 	}
 
 	class IOIOThread extends AbstractIOIOActivity.IOIOThread {
-		private AnalogInput mTempInput;
 		private AnalogInput mLightInput;
 
 		@Override
 		public void setup() throws ConnectionLostException {
 			try {
-				mTempInput = ioio_.openAnalogInput(TMP36_PIN);
 				mLightInput = ioio_.openAnalogInput(PHOTOCELL_PIN);
 				enableUi(true);
 			} catch (ConnectionLostException e) {
@@ -53,15 +50,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 				final float lightReading = mLightInput.read();
 				setSeekBar((int) (lightReading * 100));
 
-				final float voltage = mTempInput.getVoltage();
-				float raw = ((voltage * 1024) - 500) / 10;
-				int celsius = Math.round(raw);
-				celsius -= 4;
-				int fahrenheit = (int) ((celsius * (9.0 / 5.0)) + 32.0);
-
-				String tempString = Integer.toString(fahrenheit) + " F / "
-						+ Integer.toString(celsius) + " C";
-				setText(Float.toString((lightReading * 100)), tempString);
+				setText(Float.toString((lightReading * 100)));
 				sleep(10);
 			} catch (InterruptedException e) {
 				ioio_.disconnect();
@@ -95,7 +84,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 		});
 	}
 
-	private void setText(final String lightStr, final String tempStr) {
+	private void setText(final String lightStr) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
