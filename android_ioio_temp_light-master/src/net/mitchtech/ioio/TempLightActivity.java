@@ -14,7 +14,6 @@ public class TempLightActivity extends AbstractIOIOActivity {
 	private final int TMP36_PIN = 34;
 	private final int PHOTOCELL_PIN = 35;
 	
-	TextView mTempTextView;
 	TextView mLightTextView;
 
 	SeekBar mLightSeekBar;
@@ -25,7 +24,6 @@ public class TempLightActivity extends AbstractIOIOActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main);
 
-		mTempTextView = (TextView) findViewById(R.id.tvTemp);
 		
 		mLightTextView = (TextView) findViewById(R.id.tvLight);
 		mLightSeekBar = (SeekBar) findViewById(R.id.sbLight);
@@ -102,7 +100,6 @@ public class TempLightActivity extends AbstractIOIOActivity {
 			@Override
 			public void run() {
 				mLightTextView.setText(lightStr);
-				mTempTextView.setText(tempStr);
 			}
 		});
 	}

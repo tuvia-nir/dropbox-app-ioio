@@ -5,26 +5,6 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/lblTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/temp_text"
-        android:textSize="24sp"
-        android:textStyle="bold" >
-    </TextView>
-
-    <TextView
-        android:id="@+id/tvTemp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:text="@string/zero"
-        android:textSize="24sp"
-        android:textStyle="bold" >
-    </TextView>
-
-    <TextView
         android:id="@+id/lblLight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
