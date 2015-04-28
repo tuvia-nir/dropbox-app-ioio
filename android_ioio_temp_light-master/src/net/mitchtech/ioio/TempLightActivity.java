@@ -4,10 +4,16 @@ import ioio.lib.api.AnalogInput;
 import ioio.lib.api.exception.ConnectionLostException;
 import ioio.lib.util.AbstractIOIOActivity;
 import net.mitchtech.ioio.templight.R;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Bundle;
 import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+
 
 public class TempLightActivity extends AbstractIOIOActivity {
 	
@@ -16,13 +22,14 @@ public class TempLightActivity extends AbstractIOIOActivity {
 	TextView mLightTextView;
 
 	SeekBar mLightSeekBar;
+	
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main);
-
 		
 		mLightTextView = (TextView) findViewById(R.id.tvLight);
 		mLightSeekBar = (SeekBar) findViewById(R.id.sbLight);
@@ -92,4 +99,5 @@ public class TempLightActivity extends AbstractIOIOActivity {
 			}
 		});
 	}
+	
 }
