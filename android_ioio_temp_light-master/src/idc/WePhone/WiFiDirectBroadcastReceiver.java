@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.mitchtech.ioio;
+package idc.WePhone;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

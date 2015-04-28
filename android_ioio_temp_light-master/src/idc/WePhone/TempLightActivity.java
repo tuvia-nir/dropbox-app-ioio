@@ -1,4 +1,4 @@
-package net.mitchtech.ioio;
+package idc.WePhone;
 
 import ioio.lib.api.AnalogInput;
 import ioio.lib.api.exception.ConnectionLostException;
@@ -20,11 +20,10 @@ public class TempLightActivity extends AbstractIOIOActivity {
 	private final int PHOTOCELL_PIN = 35;
 	
 	TextView mLightTextView;
-
 	SeekBar mLightSeekBar;
+	float isConnected;
 	
 	
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,11 +53,18 @@ public class TempLightActivity extends AbstractIOIOActivity {
 		@Override
 		public void loop() throws ConnectionLostException {
 			try {
+				
 				final float lightReading = mLightInput.read();
-				setSeekBar((int) (lightReading * 100));
-
-				setText(Float.toString((lightReading * 100)));
+				isConnected = lightReading * 100;
+				setSeekBar((int) (isConnected));
+				setText(Float.toString((isConnected)));
+				if((int)isConnected < 30) {
+					// Send signal.
+				} else {
+					// Cancel signal.
+				}
 				sleep(10);
+				
 			} catch (InterruptedException e) {
 				ioio_.disconnect();
 			} catch (ConnectionLostException e) {

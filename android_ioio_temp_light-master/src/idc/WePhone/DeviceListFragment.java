@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.mitchtech.ioio;
+package idc.WePhone;
 
 import android.app.ListFragment;
 import android.app.ProgressDialog;

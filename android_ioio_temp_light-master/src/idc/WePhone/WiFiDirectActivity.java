@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.mitchtech.ioio;
+package idc.WePhone;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -35,8 +35,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
-import com.example.android.wifidirect.DeviceListFragment.DeviceActionListener;
 
 /**
  * An activity that uses WiFi Direct APIs to discover and connect with available
