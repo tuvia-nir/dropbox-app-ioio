@@ -3,7 +3,7 @@ package idc.WePhone;
 import ioio.lib.api.AnalogInput;
 import ioio.lib.api.exception.ConnectionLostException;
 import ioio.lib.util.AbstractIOIOActivity;
-import idc.WePhone.ioio.templight.R;
+import net.mitchtech.ioio.templight.R;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -54,6 +54,36 @@ public class TempLightActivity extends AbstractIOIOActivity {
 		channel = manager.initialize(this, getMainLooper(), null);
 		mLightTextView = (TextView) findViewById(R.id.tvLight);
 		mLightSeekBar = (SeekBar) findViewById(R.id.sbLight);
+		// Starting discovery for peers.
+		manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+		    @Override
+		    public void onSuccess() {
+		    	Toast.makeText(getApplicationContext(), "Discovery Initiated",
+                        Toast.LENGTH_SHORT).show();
+		    	/*if((int)isConnected1 < 30) {
+		    	numOfphones++;
+		    	}
+		    	if((int)isConnected2 < 30) {
+			    	numOfphones++;
+		    	}
+		    	if((int)isConnected3 < 30) {
+			    	numOfphones++;
+		    	}
+		    	if((int)isConnected4 < 30) {
+			    	numOfphones++;
+		    	}*/
+		    	//manager.notify(); // how to transfer a message to start application?
+		    	
+		    }
+
+		    // is it necessary?
+		    @Override
+		    public void onFailure(int reasonCode) {
+		    	Toast.makeText(getApplicationContext(), "Discovery Failed : " + reasonCode,
+                        Toast.LENGTH_SHORT).show();
+		    }
+		});
+
 
 		enableUi(false);
 	}
@@ -94,36 +124,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 				setSeekBar((int) (isConnected1));
 				setText(Float.toString((isConnected1)));
 				
-				// Starting discovery for peers.
-				manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
-				    @Override
-				    public void onSuccess() {
-				    	Toast.makeText(getApplicationContext(), "Discovery Initiated",
-                                Toast.LENGTH_SHORT).show();
-				    	if((int)isConnected1 < 30) {
-				    	numOfphones++;
-				    	}
-				    	if((int)isConnected2 < 30) {
-					    	numOfphones++;
-				    	}
-				    	if((int)isConnected3 < 30) {
-					    	numOfphones++;
-				    	}
-				    	if((int)isConnected4 < 30) {
-					    	numOfphones++;
-				    	}
-				    	manager.notify(); // how to transfer a message to start application?
-				    	
-				    }
-
-				    // is it necessary?
-				    @Override
-				    public void onFailure(int reasonCode) {
-				    	Toast.makeText(getApplicationContext(), "Discovery Failed : " + reasonCode,
-                                Toast.LENGTH_SHORT).show();
-				    }
-				});
-				sleep(10);
+							sleep(10);
 				
 			} catch (InterruptedException e) {
 				ioio_.disconnect();

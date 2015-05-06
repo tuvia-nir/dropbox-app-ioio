@@ -16,6 +16,7 @@
 
 package idc.WePhone;
 
+import net.mitchtech.ioio.templight.R;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
