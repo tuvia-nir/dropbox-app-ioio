@@ -33,14 +33,18 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -66,22 +70,10 @@ import com.dropbox.client2.session.AppKeyPair;
 public class DBRoulette extends Activity {
 	private static final String TAG = "DBRoulette";
 
-	///////////////////////////////////////////////////////////////////////////
-	//                      Your app-specific settings.                      //
-	///////////////////////////////////////////////////////////////////////////
-
-	// Replace this with your app key and secret assigned by Dropbox.
-	// Note that this is a really insecure way to do this, and you shouldn't
-	// ship code which contains your key & secret in such an obvious way.
-	// Obfuscation is good.
+	// App key and secret assigned by Dropbox.
+	// Should do obfuscation is good.
 	private static final String APP_KEY =    "c3ni1eiw3ackhz5";
 	private static final String APP_SECRET = "io385nt1sgfs2qb";
-
-	///////////////////////////////////////////////////////////////////////////
-	//                      End app-specific settings.                       //
-	///////////////////////////////////////////////////////////////////////////
-
-	// You don't need to change these, leave them alone.
 	private static final String ACCOUNT_PREFS_NAME = "prefs";
 	private static final String ACCESS_KEY_NAME = "ACCESS_KEY";
 	private static final String ACCESS_SECRET_NAME = "ACCESS_SECRET";
@@ -108,11 +100,22 @@ public class DBRoulette extends Activity {
 	private static final int GALLERY_PICTURE = 2;
 	private String mCameraFileName;
 	private String mGalleryFileName;
+	private WifiP2pManager manager;
+    private Channel channel;
+    private BroadcastReceiver receiver = null; // how to use this reciever?
+    private final IntentFilter intentFilter = new IntentFilter();
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		manager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
+	    channel = manager.initialize(this, getMainLooper(), null);
+	    receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
+	    intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
+	    intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
+	    intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
+	    intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 		if (savedInstanceState != null) {
 			mCameraFileName = savedInstanceState.getString("mCameraFileName");
 		}
@@ -130,10 +133,12 @@ public class DBRoulette extends Activity {
 
 		mSubmit.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				
 				// This logs you out if you're logged in, or vice versa
 				if (mLoggedIn) {
 					logOut();
 				} else {
+					
 					// Start the remote authentication
 					if (USE_OAUTH1) {
 						mApi.getSession().startAuthentication(DBRoulette.this);
@@ -151,7 +156,6 @@ public class DBRoulette extends Activity {
 
 		// This is the button to take a photo
 		mCamera = (Button)findViewById(R.id.photo_button);
-
 		mCamera.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				Intent intent = new Intent();
