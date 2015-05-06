@@ -3,7 +3,7 @@ package idc.WePhone;
 import ioio.lib.api.AnalogInput;
 import ioio.lib.api.exception.ConnectionLostException;
 import ioio.lib.util.AbstractIOIOActivity;
-import net.mitchtech.ioio.templight.R;
+import idc.WePhone.ioio.templight.R;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
@@ -82,7 +82,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 		public void loop() throws ConnectionLostException {
 			try {
 				
-				// Discovering light from sensor1 - should duplicate?
+				// Discovering light from sensor1 - should duplicate is it correct 4 readings??
 				final float lightReading1 = mLightInput1.read();
 				isConnected1 = lightReading1 * 100;
 				final float lightReading2 = mLightInput2.read();
@@ -98,7 +98,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 				manager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
 				    @Override
 				    public void onSuccess() {
-				    	Toast.makeText(WiFiDirectActivity.this, "Discovery Initiated",
+				    	Toast.makeText(getApplicationContext(), "Discovery Initiated",
                                 Toast.LENGTH_SHORT).show();
 				    	if((int)isConnected1 < 30) {
 				    	numOfphones++;
@@ -112,13 +112,14 @@ public class TempLightActivity extends AbstractIOIOActivity {
 				    	if((int)isConnected4 < 30) {
 					    	numOfphones++;
 				    	}
-				    	manager.notify(); // how to transfer a message?
+				    	manager.notify(); // how to transfer a message to start application?
 				    	
 				    }
 
+				    // is it necessary?
 				    @Override
 				    public void onFailure(int reasonCode) {
-				    	Toast.makeText(WiFiDirectActivity.this, "Discovery Failed : " + reasonCode,
+				    	Toast.makeText(getApplicationContext(), "Discovery Failed : " + reasonCode,
                                 Toast.LENGTH_SHORT).show();
 				    }
 				});
