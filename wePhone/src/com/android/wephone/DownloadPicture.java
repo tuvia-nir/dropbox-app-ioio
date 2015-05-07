@@ -60,7 +60,8 @@ import com.dropbox.client2.exception.DropboxUnlinkedException;
 
 public class DownloadPicture extends AsyncTask<Void, Long, Boolean> {
 
-
+	// Make a list of everything in it that we can get a thumbnail for
+	ArrayList<Entry> thumbs = new ArrayList<Entry>();
 	private Context mContext;
 	private final ProgressDialog mDialog;
 	private DropboxAPI<?> mApi;
@@ -74,6 +75,7 @@ public class DownloadPicture extends AsyncTask<Void, Long, Boolean> {
 	private Long mFileLen;
 	private String mErrorMsg;
     private static int number;
+//    static int photosNumber;
 	// Note that, since we use a single file name here for simplicity, you
 	// won't be able to use this code for two simultaneous downloads.
 	private final static String IMAGE_FILE_NAME = "dbroulette.png";
@@ -126,36 +128,27 @@ public class DownloadPicture extends AsyncTask<Void, Long, Boolean> {
 				return false;
 			}
 
-			// Make a list of everything in it that we can get a thumbnail for
-			ArrayList<Entry> thumbs = new ArrayList<Entry>();
 			for (Entry ent: dirent.contents) {
 				if (ent.thumbExists) {
 					// Add it to the list of thumbs we can choose from
 					thumbs.add(ent);
+	//				photosNumber++;
 				}
 			}
 
 			if (mCanceled) {
 				return false;
 			}
-
+			
 			if (thumbs.size() == 0) {
 				// No thumbs in that directory
 				mErrorMsg = "No pictures in that directory";
 				return false;
 			}
-			//            Collections.sort(thumbs, new Comparator<MyObject>() {
-			//            	  public int compare(MyObject o1, MyObject o2) {
-			//            	      if (o1.getDateTime() == null || o2.getDateTime() == null)
-			//            	        return 0;
-			//            	      return o1.getDateTime().compareTo(o2.getDateTime());
-			//            	  }
-			//            	});
-			//!!!!!!!!!!!!!!!!!! HERE I NEED TO PICK A SPECIFIC PICTURE AND CHAGE WHAT THEY WROTE !!!!!!!!!!!!!!!!!!!!!
-			// Now pick a random one
-			//int index = (int)(Math.random() * thumbs.size());
-			if (number >= thumbs.size()) {
-				number = 0;
+			//Goes back to the beginning of the list in case of passing the number of pictures 
+			//Existing in the drop box
+			if (number >= thumbs.size() && number < (2 * thumbs.size())) {
+				number = number - thumbs.size();
 			}
 			Entry ent = thumbs.get(number);
 			String path = ent.path;
@@ -170,7 +163,7 @@ public class DownloadPicture extends AsyncTask<Void, Long, Boolean> {
 				return false;
 			}
 
-			// This downloads a smaller, thumbnail version of the file.  The
+			// This downloads a smaller, thumb nail version of the file.  The
 			// API to download the actual file is roughly the same.
 			mApi.getThumbnail(path, mFos, ThumbSize.BESTFIT_960x640,
 					ThumbFormat.JPEG, null);
@@ -249,6 +242,9 @@ public class DownloadPicture extends AsyncTask<Void, Long, Boolean> {
 		Toast error = Toast.makeText(mContext, msg, Toast.LENGTH_LONG);
 		error.show();
 	}
-
+	
+	public int GetNumberOfPhotos() {
+		return thumbs.size();
+	}
 
 }
