@@ -242,17 +242,18 @@ public class DBRoulette extends Activity {
 			}
 		});
 
-		// (1) Implement a listener
-
+		// Implemented a listener
 		DiscoveryListener listener = new DiscoveryListener() {
 		    public void onDiscoveryStarted() {
 		        // The discovery has been started in the background and is now waiting
 		        // for incoming Intents.
+		    	showToast("Discovery started");
 		    }
 
 		    public void onDiscoveryStopped() {
 		        // The discovery has been stopped. The listener won't be notified for
 		        // any incoming Intents anymore.
+		    	showToast("Discovery stoped");
 		    }
 
 		    public void onDiscoveryError(Exception exception) {
@@ -260,15 +261,17 @@ public class DBRoulette extends Activity {
 		        // probably. The actual Exception that has been thrown in the background
 		        // thread is passed to this method. A call of this method is almost always
 		        // followed by a call to onDiscoveryStopped()
+		    	showToast("Discovery error!");
 		    }
 
 		    public void onIntentDiscovered(InetAddress address, Intent intent) {
+		    	showToast("Got friend intent - start photos");
 		    	slideShowActive = true;
 				startTimer();
 		    }
 		};
-		// (2) Create and start a discovery
-
+		
+		// Create and start a discovery
 		Discovery discovery = new Discovery();
 		discovery.setDiscoveryListener(listener);
 
@@ -315,6 +318,7 @@ public class DBRoulette extends Activity {
 					}
 				}
 			});
+		
 		//Downloading and resenting the pictures
 		timerTask = new TimerTask() {
 			public void run() {

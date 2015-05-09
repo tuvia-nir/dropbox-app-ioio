@@ -54,7 +54,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 				lightInput[3] = ioio_.openAnalogInput(PHOTOCELL_PIN4);
 				if(numOfphones > 0) {
 
-					// Create an Intent object to send.
+					// Create an Intent object to send. - should take out or doesn't matter?
 					Intent intent = new Intent();
 
 					// Transmitter using default multicast address and port.
@@ -77,14 +77,12 @@ public class TempLightActivity extends AbstractIOIOActivity {
 				// Discovering light from 4 sensors.
 				for(int i = 0; i < 4; i++) {
 					connected[i] = lightInput[i].read() * 100;
-					if(numOfphones == 0) {
-						if(connected[i] <= 30) {
-							insidePhones++;
-						}
+					if(connected[i] <= 30) {
+						insidePhones++;
 					}
 				}
 
-				// Start
+				// Start while there are more than 2 phones.
 				if(insidePhones >= 2) {
 					numOfphones = 1;
 					insidePhones = 0;
