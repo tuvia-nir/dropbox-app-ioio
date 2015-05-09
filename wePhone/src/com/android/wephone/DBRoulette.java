@@ -26,6 +26,7 @@
 package com.android.wephone;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,6 +58,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.androidzeitgeist.ani.discovery.Discovery;
+import com.androidzeitgeist.ani.discovery.DiscoveryException;
+import com.androidzeitgeist.ani.discovery.DiscoveryListener;
 import com.dropbox.android.sample.R;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
@@ -130,11 +134,9 @@ public class DBRoulette extends Activity {
 
 		// Basic Android widgets
 		setContentView(R.layout.main);
-
 		checkAppKeySetup();
 
 		mSubmit = (Button)findViewById(R.id.auth_button);
-
 		mSubmit.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				// This logs you out if you're logged in, or vice versa
@@ -222,7 +224,8 @@ public class DBRoulette extends Activity {
 			}
 		});
 
-
+		// Start the server socket.
+		
 		// This is the button for the slide show
 		mSlides = (Button)findViewById(R.id.slides_button);
 
@@ -239,6 +242,46 @@ public class DBRoulette extends Activity {
 			}
 		});
 
+		// (1) Implement a listener
+
+		DiscoveryListener listener = new DiscoveryListener() {
+		    public void onDiscoveryStarted() {
+		        // The discovery has been started in the background and is now waiting
+		        // for incoming Intents.
+		    }
+
+		    public void onDiscoveryStopped() {
+		        // The discovery has been stopped. The listener won't be notified for
+		        // any incoming Intents anymore.
+		    }
+
+		    public void onDiscoveryError(Exception exception) {
+		        // A (network) error has occured that prevents the discovery from working
+		        // probably. The actual Exception that has been thrown in the background
+		        // thread is passed to this method. A call of this method is almost always
+		        // followed by a call to onDiscoveryStopped()
+		    }
+
+		    public void onIntentDiscovered(InetAddress address, Intent intent) {
+		    	slideShowActive = true;
+				startTimer();
+		    }
+		};
+		// (2) Create and start a discovery
+
+		Discovery discovery = new Discovery();
+		discovery.setDiscoveryListener(listener);
+
+		// Start discovery
+		try {
+			discovery.enable();
+		} catch (DiscoveryException e) {
+			e.printStackTrace();
+		} 
+
+		// necessary?
+		//discovery.disable() // Stop discovery
+		
 		// Display the proper UI state if logged in or not
 		setLoggedIn(mApi.getSession().isLinked());
 
