@@ -88,7 +88,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 				// Check if there's a state change and we need to notify the clients
 				if (!(isRunning) && shouldBeRunning) {
 					
-					// Create an Intent object to send with START command
+					// Create an Intent object to send with START command.
 					intent = new Intent();
 					intent.putExtra(EXTRA_CMD, START);
 				} else if (isRunning && !(shouldBeRunning)) {
