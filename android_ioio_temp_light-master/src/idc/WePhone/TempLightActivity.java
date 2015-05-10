@@ -12,13 +12,14 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class TempLightActivity extends AbstractIOIOActivity {
 
 	private static final String START = "START";
 	private static final String STOP = "STOP";
-	private static final String EXTRA_CMD = "idc.WePhone.com.intent";
+	private static final String EXTRA_CMD = "Action";
 	private static final int MIN_PHONE_TO_RUN = 1;
 	private final int PHOTOCELL_PIN1 = 35;
 	private final int PHOTOCELL_PIN2 = 34;
@@ -104,9 +105,10 @@ public class TempLightActivity extends AbstractIOIOActivity {
 					// Transmitter using default multicast address and port.
 					transmitter = new Transmitter(); 
 					transmitter.transmit(intent);
-					
-				//	Toast.makeText(TempLightActivity.this, 
-					//		"Sent " + intent.getExtras().getString(EXTRA_CMD), Toast.LENGTH_SHORT).show();
+
+					//Toast toast = Toast.makeText(getApplicationContext(), "Sent" + intent.getExtras().getString(EXTRA_CMD),
+						//	Toast.LENGTH_LONG);
+					//toast.show();
 					isRunning = shouldBeRunning;
 				}
 				setSeekBar((int) (connected[0]));
