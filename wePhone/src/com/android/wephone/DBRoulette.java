@@ -263,8 +263,16 @@ public class DBRoulette extends Activity {
 		    }
 
 		    public void onIntentDiscovered(InetAddress address, Intent intent) {
-		    	slideShowActive = true;
-				startTimer();
+		    	String Action = intent.getStringExtra("Action");
+		    	if(Action == "START") {
+		    		slideShowActive = true;
+					startTimer();	
+		    	} else if(Action == "STOP") {
+		    		if(timer != null) {
+			    		timer.cancel();
+			    		timer = null;
+			    	}
+		    	}
 		    }
 		};
 		// (2) Create and start a discovery
@@ -293,7 +301,7 @@ public class DBRoulette extends Activity {
 		//initialize the TimerTask's job
 		initializeTimerTask();
 		//schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
-		timer.schedule(timerTask, 5000, 10000); //
+		timer.schedule(timerTask, 100, 10000); //
 	}
 
 
