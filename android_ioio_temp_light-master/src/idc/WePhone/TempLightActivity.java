@@ -89,7 +89,6 @@ public class TempLightActivity extends AbstractIOIOActivity {
 					numOfphones = 1;
 					insidePhones = 0;
 				} else {
-<<<<<<< HEAD
 					shouldBeRunning = false;
 				}
 				
@@ -104,10 +103,8 @@ public class TempLightActivity extends AbstractIOIOActivity {
 					// Create an Intent object to send with STOP command
 					intent = new Intent();
 					intent.putExtra(EXTRA_CMD, STOP);
-=======
 					numOfphones = 0;
 					insidePhones = 0;
->>>>>>> origin/master
 				}
 
 				setSeekBar((int) (connected[0]));
