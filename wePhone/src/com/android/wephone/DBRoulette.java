@@ -247,13 +247,13 @@ public class DBRoulette extends Activity {
 		    public void onDiscoveryStarted() {
 		        // The discovery has been started in the background and is now waiting
 		        // for incoming Intents.
-		    	showToast("Discovery started");
+		    	//showToast("Discovery started");
 		    }
 
 		    public void onDiscoveryStopped() {
 		        // The discovery has been stopped. The listener won't be notified for
 		        // any incoming Intents anymore.
-		    	showToast("Discovery stoped");
+		    	//showToast("Discovery stoped");
 		    }
 
 		    public void onDiscoveryError(Exception exception) {
@@ -261,11 +261,11 @@ public class DBRoulette extends Activity {
 		        // probably. The actual Exception that has been thrown in the background
 		        // thread is passed to this method. A call of this method is almost always
 		        // followed by a call to onDiscoveryStopped()
-		    	showToast("Discovery error!");
+		    	//showToast("Discovery error!");
 		    }
 
 		    public void onIntentDiscovered(InetAddress address, Intent intent) {
-		    	showToast("Got friend intent - start photos");
+		    	//showToast("Got friend intent - start photos");
 		    	slideShowActive = true;
 				startTimer();
 		    }

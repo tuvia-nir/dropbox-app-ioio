@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class TempLightActivity extends AbstractIOIOActivity {
 
+	private static final String EXTRA_CMD = "idc.WePhone.EXTRA_COMMAND";
 	private static final String START = "START";
 	private static final String STOP = "STOP";
 	private final int PHOTOCELL_PIN1 = 35;
@@ -25,9 +27,9 @@ public class TempLightActivity extends AbstractIOIOActivity {
 
 	TextView mLightTextView;
 	SeekBar mLightSeekBar;
-	float[] connected = new float[4];
-	int numOfphones = 0;
-	int insidePhones = 0;
+	float[] connected = new float[4];	
+	boolean isRunning = false;
+	public int MIN_PHONE_TO_RUN = 1;
 
 
 
@@ -52,45 +54,62 @@ public class TempLightActivity extends AbstractIOIOActivity {
 				lightInput[1] = ioio_.openAnalogInput(PHOTOCELL_PIN2);
 				lightInput[2] = ioio_.openAnalogInput(PHOTOCELL_PIN3);
 				lightInput[3] = ioio_.openAnalogInput(PHOTOCELL_PIN4);
-				if(numOfphones > 0) {
-
-					// Create an Intent object to send. - should take out or doesn't matter?
-					Intent intent = new Intent();
-
-					// Transmitter using default multicast address and port.
-					Transmitter transmitter = new Transmitter(); 
-					transmitter.transmit(intent);
-				}
+				
 				enableUi(true);
 			} catch (ConnectionLostException e) {
 				enableUi(false);
 				throw e;
-			}catch (TransmitterException exception) {
-				// Handle error
 			}
 		}
 
 		@Override
 		public void loop() throws ConnectionLostException {
 			try {
+				
+				int nPhones = 0;
+				Intent intent = null;
 
 				// Discovering light from 4 sensors.
 				for(int i = 0; i < 4; i++) {
 					connected[i] = lightInput[i].read() * 100;
 					if(connected[i] <= 30) {
-						insidePhones++;
+						nPhones++;
 					}
 				}
-
-				// Start while there are more than 2 phones.
-				if(insidePhones >= 2) {
-					numOfphones = 1;
-					insidePhones = 0;
+				boolean shouldBeRunning = false;
+				
+				// Should be running if more than 2 phones.
+				if(nPhones >= MIN_PHONE_TO_RUN ) {
+					shouldBeRunning = true;
 				} else {
-					numOfphones = 0;
-					insidePhones = 0;
+					shouldBeRunning = false;
+				}
+				
+				// Check if there's a state change and we need to notify the clients
+				if (!(isRunning) && shouldBeRunning) {
+					
+					// Create an Intent object to send with START command
+					intent = new Intent();
+					intent.putExtra(EXTRA_CMD, START);
+				} else if (isRunning && !(shouldBeRunning)) {
+					
+					// Create an Intent object to send with STOP command
+					intent = new Intent();
+					intent.putExtra(EXTRA_CMD, STOP);
 				}
 
+				// If a change needs to be transmitted, send it to the clients
+				if (intent != null) {
+					
+					// Transmitter using default multicast address and port.
+					Transmitter transmitter = new Transmitter(); 
+					transmitter.transmit(intent);
+					
+				//	Toast.makeText(TempLightActivity.this, 
+					//		"Sent " + intent.getExtras().getString(EXTRA_CMD), Toast.LENGTH_SHORT).show();
+					isRunning = shouldBeRunning;
+				}
+				
 				setSeekBar((int) (connected[0]));
 				setText(Float.toString((connected[0])));
 				sleep(10);
@@ -100,6 +119,8 @@ public class TempLightActivity extends AbstractIOIOActivity {
 			} catch (ConnectionLostException e) {
 				enableUi(false);
 				throw e;
+			} catch (TransmitterException exception) {
+				// Handle error
 			}
 		}
 	}
