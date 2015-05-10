@@ -65,7 +65,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 			} catch (ConnectionLostException e) {
 				enableUi(false);
 				throw e;
-			}catch (TransmitterException exception) {
+			} catch (TransmitterException exception) {
 				// Handle error
 			}
 		}
