@@ -9,6 +9,7 @@ import ioio.lib.util.AbstractIOIOActivity;
 import net.mitchtech.ioio.templight.R;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -19,7 +20,8 @@ public class TempLightActivity extends AbstractIOIOActivity {
 
 	private static final String START = "START";
 	private static final String STOP = "STOP";
-	private static final String EXTRA_CMD = "Action";
+	private static final String ACTION_CMD = "Action";
+	
 	private static final int MIN_PHONE_TO_RUN = 1;
 	private final int PHOTOCELL_PIN1 = 35;
 	private final int PHOTOCELL_PIN2 = 34;
@@ -32,6 +34,8 @@ public class TempLightActivity extends AbstractIOIOActivity {
 	float[] connected = new float[4];
 	int numOfphones = 0;
 	int insidePhones = 0;
+	Intent intent = null;
+	Transmitter transmitter = null;
 
 
 
@@ -66,16 +70,18 @@ public class TempLightActivity extends AbstractIOIOActivity {
 		@Override
 		public void loop() throws ConnectionLostException {
 			try {
-				int nPhones = 0;
-				Intent intent = null;
-				Transmitter transmitter = null;
+				
 				
 				// Discovering light from 4 sensors.
+				int nPhones = 0;
 				for(int i = 0; i < 4; i++) {
 					connected[i] = lightInput[i].read() * 100;
 					if(connected[i] <= 30) {
-						nPhones++;
+						//nPhones++; while there are no 4 sensors
 					}
+				}
+				if(connected[0] <= 30) {
+					nPhones++;
 				}
 				boolean shouldBeRunning = false;
 				
@@ -91,24 +97,24 @@ public class TempLightActivity extends AbstractIOIOActivity {
 					
 					// Create an Intent object to send with START command.
 					intent = new Intent();
-					intent.putExtra(EXTRA_CMD, START);
+					intent.putExtra(ACTION_CMD, START);
+					Log.d("DEBUG", "INTENTStart");
 				} else if (isRunning && !(shouldBeRunning)) {
 					
 					// Create an Intent object to send with STOP command
 					intent = new Intent();
-					intent.putExtra(EXTRA_CMD, STOP);
+					intent.putExtra(ACTION_CMD, STOP);
 				}
 
 				// If a change needs to be transmitted, send it to the clients
 				if (intent != null) {
 					
 					// Transmitter using default multicast address and port.
+					Log.d("DEBUG", "intenttransmitance");
 					transmitter = new Transmitter(); 
 					transmitter.transmit(intent);
-
-					//Toast toast = Toast.makeText(getApplicationContext(), "Sent" + intent.getExtras().getString(EXTRA_CMD),
-						//	Toast.LENGTH_LONG);
-					//toast.show();
+					String str = intent.getExtras().getString(ACTION_CMD);
+					// WTF exception? Toast.makeText(getApplicationContext(), "Sent " +str, Toast.LENGTH_LONG).show();
 					isRunning = shouldBeRunning;
 				}
 				setSeekBar((int) (connected[0]));

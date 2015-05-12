@@ -71,6 +71,8 @@ import com.dropbox.client2.session.AppKeyPair;
 
 public class DBRoulette extends Activity {
 	private static final String TAG = "DBRoulette";
+	private static final String ACTION_CMD = "Action";
+
 
 	///////////////////////////////////////////////////////////////////////////
 	//                      Your app-specific settings.                      //
@@ -261,9 +263,10 @@ public class DBRoulette extends Activity {
 		        // thread is passed to this method. A call of this method is almost always
 		        // followed by a call to onDiscoveryStopped()
 		    }
-
+		    DBReciever DBReciever = new DBReciever();
+		    
 		    public void onIntentDiscovered(InetAddress address, Intent intent) {
-		    	String Action = intent.getStringExtra("Action");
+		    	String Action = intent.getExtras().getString(ACTION_CMD);
 		    	if(Action == "START") {
 		    		slideShowActive = true;
 					startTimer();	
@@ -306,11 +309,13 @@ public class DBRoulette extends Activity {
 
 
 	private void initializeTimerTask() {
+	
 		//Stopping/Resuming the pictures slide show in case somebody wants to
 		//Just by clicking on the screen.
 		mImage.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (slideShowActive) {
+					
 					//stop the timer, if it's not already null
 					if (timer != null) {
 						timer.cancel();
@@ -323,6 +328,7 @@ public class DBRoulette extends Activity {
 					}
 				}
 			});
+		
 		//Downloading and resenting the pictures
 		timerTask = new TimerTask() {
 			public void run() {
