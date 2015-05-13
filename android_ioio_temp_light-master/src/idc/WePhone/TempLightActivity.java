@@ -77,7 +77,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 				for(int i = 0; i < 4; i++) {
 					connected[i] = lightInput[i].read() * 100;
 					if(connected[i] <= 30) {
-						//nPhones++; while there are no 4 sensors
+					//	nPhones++;
 					}
 				}
 				if(connected[0] <= 30) {
@@ -104,7 +104,10 @@ public class TempLightActivity extends AbstractIOIOActivity {
 					// Create an Intent object to send with STOP command
 					intent = new Intent();
 					intent.putExtra(ACTION_CMD, STOP);
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 				}
 
 				// If a change needs to be transmitted, send it to the clients

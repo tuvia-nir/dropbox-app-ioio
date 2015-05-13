@@ -24,14 +24,14 @@
 
     <!-- added reciever to open the app on intent. -->
 <receiver
-    android:name=".receivers.BootUpReceiver"
+    android:name=".receivers.DBReciever"
     android:enabled="true"
     android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
 
-        <intent-filter>
+        <!--  should implement? <intent-filter>
             <action android:name="android.intent.action.BOOT_COMPLETED" />
             <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
+        </intent-filter> -->
     </receiver>
     
     <activity
