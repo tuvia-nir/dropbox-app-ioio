@@ -9,10 +9,12 @@ public class DBReciever extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Log.d("AlarmServiceBroadcastReciever", "onReceive()");
-		 Intent i = new Intent(context, DBRoulette.class);  
-		    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		    context.startActivity(i);
+		if (intent.getExtras().getString("Action").equals("START")) {
+			Log.d("BroadcastReciever", "onReceive()");
+			Intent i = new Intent(context, DBRoulette.class);  
+			//i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(i);
+		}
 	}
 
 }

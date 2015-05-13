@@ -263,8 +263,7 @@ public class DBRoulette extends Activity {
 		        // thread is passed to this method. A call of this method is almost always
 		        // followed by a call to onDiscoveryStopped()
 		    }
-		    DBReciever DBReciever = new DBReciever();
-		    
+		   
 		    public void onIntentDiscovered(InetAddress address, Intent intent) {
 		    	String Action = intent.getExtras().getString(ACTION_CMD);
 		    	if(Action == "START") {
@@ -530,6 +529,7 @@ public class DBRoulette extends Activity {
 			edit.commit();
 			return;
 		}
+		
 		// Store the OAuth 1 access token, if there is one.  This is only necessary if
 		// you're still using OAuth 1.
 		AccessTokenPair oauth1AccessToken = session.getAccessTokenPair();
