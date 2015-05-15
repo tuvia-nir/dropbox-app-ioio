@@ -103,6 +103,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 					// Create an Intent object to send with STOP command
 					intent = new Intent();
 					intent.putExtra(ACTION_CMD, STOP);
+
 				}
 
 				// If a change needs to be transmitted, send it to the clients
