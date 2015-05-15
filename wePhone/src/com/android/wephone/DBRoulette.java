@@ -116,6 +116,7 @@ public class DBRoulette extends Activity {
 	private static final int GALLERY_PICTURE = 2;
 	private String mCameraFileName;
 	private String mGalleryFileName;
+	
 	//All the timer members plus handler
 	Timer timer;
 	TimerTask timerTask;
@@ -129,6 +130,14 @@ public class DBRoulette extends Activity {
 		if (savedInstanceState != null) {
 			mCameraFileName = savedInstanceState.getString("mCameraFileName");
 		}
+		
+		// Start and trigger the background service
+		/*Context curContext = getApplicationContext();
+		Intent serviceIntent = new Intent(curContext, LocalService.class);*/
+		
+		// Add data to intent - info for debug
+		/*serviceIntent.putExtra("Action", "Background service up and running");
+		curContext.startService(serviceIntent); */
 
 		// We create a new AuthSession so that we can use the Dropbox API.
 		AndroidAuthSession session = buildSession();

@@ -84,7 +84,6 @@ public class TempLightActivity extends AbstractIOIOActivity {
 					nPhones++;
 				}
 				boolean shouldBeRunning = false;
-				
 				// Should be running if more than 2 phones.
 				if(nPhones >= MIN_PHONE_TO_RUN ) {
 					shouldBeRunning = true;
@@ -104,10 +103,6 @@ public class TempLightActivity extends AbstractIOIOActivity {
 					// Create an Intent object to send with STOP command
 					intent = new Intent();
 					intent.putExtra(ACTION_CMD, STOP);
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 				}
 
 				// If a change needs to be transmitted, send it to the clients
