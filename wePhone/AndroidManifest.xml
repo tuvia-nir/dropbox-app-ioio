@@ -22,17 +22,13 @@
       </intent-filter>
     </activity>
 
-    <!-- added reciever to open the app on intent. -->
-<receiver
-    android:name=".receivers.DBReciever"
-    android:enabled="true" >
-
-        <!--  should implement? <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED" />
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter> -->
-    </receiver>
-    
+    <!-- added Service to open the app on intent. -->
+  <service
+  android:name="LocalService"
+  android:icon="@drawable/icon"  
+  >
+</service> 
+    -->
     <activity
       android:name="com.dropbox.client2.android.AuthActivity"
       android:launchMode="singleTask"
