@@ -21,8 +21,8 @@ public class TempLightActivity extends AbstractIOIOActivity {
 	private static final String START = "START";
 	private static final String STOP = "STOP";
 	private static final String ACTION_CMD = "Action";
-	
-	private static final int MIN_PHONE_TO_RUN = 1;
+
+	private static final int MIN_PHONE_TO_RUN = 2;
 	private final int PHOTOCELL_PIN1 = 35;
 	private final int PHOTOCELL_PIN2 = 34;
 	private final int PHOTOCELL_PIN3 = 33;
@@ -32,6 +32,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 	TextView mLightTextView;
 	SeekBar mLightSeekBar;
 	float[] connected = new float[4];
+	float[] baseLine = new float[4];
 	int numOfphones = 0;
 	int insidePhones = 0;
 	Intent intent = null;
@@ -70,37 +71,42 @@ public class TempLightActivity extends AbstractIOIOActivity {
 		@Override
 		public void loop() throws ConnectionLostException {
 			try {
-				
-				
+
+
 				// Discovering light from 4 sensors.
 				int nPhones = 0;
 				for(int i = 0; i < 4; i++) {
 					connected[i] = lightInput[i].read() * 100;
-					if(connected[i] <= 30) {
-					//	nPhones++;
+					baseLine[i] = connected[i];
+					//					if(connected[i] / baseLine[i] <= 0.5) {
+					//						nPhones++;
+					//					}
+					//					if(connected[i] <= 30) {
+					//						nPhones++;
+					//					}
+					//				}
+					if(connected[0] <= 30) {
+						nPhones++;
 					}
 				}
-				if(connected[0] <= 30) {
-					nPhones++;
-				}
 				boolean shouldBeRunning = false;
-				
+
 				// Should be running if more than 2 phones.
 				if(nPhones >= MIN_PHONE_TO_RUN ) {
 					shouldBeRunning = true;
 				} else {
 					shouldBeRunning = false;
 				}
-				
+
 				// Check if there's a state change and we need to notify the clients
 				if (!(isRunning) && shouldBeRunning) {
-					
+
 					// Create an Intent object to send with START command.
 					intent = new Intent();
 					intent.putExtra(ACTION_CMD, START);
 					Log.d("DEBUG", "INTENTStart");
 				} else if (isRunning && !(shouldBeRunning)) {
-					
+
 					// Create an Intent object to send with STOP command
 					intent = new Intent();
 					intent.putExtra(ACTION_CMD, STOP);
@@ -109,7 +115,7 @@ public class TempLightActivity extends AbstractIOIOActivity {
 
 				// If a change needs to be transmitted, send it to the clients
 				if (intent != null) {
-					
+
 					// Transmitter using default multicast address and port.
 					Log.d("DEBUG", "intenttransmitance");
 					transmitter = new Transmitter(); 
