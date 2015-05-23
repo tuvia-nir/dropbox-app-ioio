@@ -22,11 +22,10 @@
       </intent-filter>
     </activity>
 
-    <!-- added reciever to open the app on intent. -->
-<!--  <service
+    <!-- added Service to open the app on intent. -->
+  <service
   android:name="LocalService"
-  android:icon="@drawable/icon"
-  
+  android:icon="@drawable/icon"  
   >
 </service> 
     -->
