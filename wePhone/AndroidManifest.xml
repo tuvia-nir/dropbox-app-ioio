@@ -3,6 +3,7 @@
       package="com.dropbox.android.sample"
       android:versionCode="1"
       android:versionName="1.0">
+      
 
   <uses-sdk android:minSdkVersion="19" />
 
@@ -41,6 +42,5 @@
         <category android:name="android.intent.category.DEFAULT" />
       </intent-filter>
     </activity>
-
   </application>
 </manifest> 

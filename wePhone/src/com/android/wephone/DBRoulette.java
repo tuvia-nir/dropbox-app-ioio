@@ -216,10 +216,9 @@ public class DBRoulette extends Activity {
 			}
 		});
 
-		// Start the server socket.
-		
+		// Slides button - depracted.
 		// This is the button for the slide show
-		mSlides = (Button)findViewById(R.id.slides_button);
+		/*mSlides = (Button)findViewById(R.id.slides_button);
 
 		// This is the button to present the pictures slides - deprecated
 		mSlides = (Button)findViewById(R.id.slides_button);
@@ -228,7 +227,7 @@ public class DBRoulette extends Activity {
 				slideShowActive = true;
 				startTimer();
 			}
-		});
+		});*/
 
 		// Implementation of a listener
 
@@ -442,8 +441,10 @@ public class DBRoulette extends Activity {
 	private void setLoggedIn(boolean loggedIn) {
 		mLoggedIn = loggedIn;
 		if (loggedIn) {
+			Button button = (Button) mSubmit;
+	        button.setVisibility(View.INVISIBLE);
 			mSubmit.setText("Unlink from Dropbox");
-			mDisplay.setVisibility(View.VISIBLE);
+			//mDisplay.setVisibility(View.VISIBLE);
 		} else {
 			mSubmit.setText("Link with Dropbox");
 			mDisplay.setVisibility(View.GONE);
