@@ -73,23 +73,11 @@ public class DBRoulette extends Activity {
 	private static final String TAG = "DBRoulette";
 	private static final String ACTION_CMD = "Action";
 
-
-	///////////////////////////////////////////////////////////////////////////
-	//                      Your app-specific settings.                      //
-	///////////////////////////////////////////////////////////////////////////
-
-	// Replace this with your app key and secret assigned by Dropbox.
 	// Note that this is a really insecure way to do this, and you shouldn't
 	// ship code which contains your key & secret in such an obvious way.
 	// Obfuscation is good.
-	private static final String APP_KEY =    "c3ni1eiw3ackhz5";
+	private static final String APP_KEY = "c3ni1eiw3ackhz5";
 	private static final String APP_SECRET = "io385nt1sgfs2qb";
-
-	///////////////////////////////////////////////////////////////////////////
-	//                      End app-specific settings.                       //
-	///////////////////////////////////////////////////////////////////////////
-
-	// You don't need to change these, leave them alone.
 	private static final String ACCOUNT_PREFS_NAME = "prefs";
 	private static final String ACCESS_KEY_NAME = "ACCESS_KEY";
 	private static final String ACCESS_SECRET_NAME = "ACCESS_SECRET";
@@ -130,14 +118,6 @@ public class DBRoulette extends Activity {
 		if (savedInstanceState != null) {
 			mCameraFileName = savedInstanceState.getString("mCameraFileName");
 		}
-		
-		// Start and trigger the background service
-		/*Context curContext = getApplicationContext();
-		Intent serviceIntent = new Intent(curContext, LocalService.class);*/
-		
-		// Add data to intent - info for debug
-		/*serviceIntent.putExtra("Action", "Background service up and running");
-		curContext.startService(serviceIntent); */
 
 		// We create a new AuthSession so that we can use the Dropbox API.
 		AndroidAuthSession session = buildSession();
@@ -150,6 +130,7 @@ public class DBRoulette extends Activity {
 		mSubmit = (Button)findViewById(R.id.auth_button);
 		mSubmit.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+				
 				// This logs you out if you're logged in, or vice versa
 				if (mLoggedIn) {
 					logOut();
@@ -240,12 +221,8 @@ public class DBRoulette extends Activity {
 		// This is the button for the slide show
 		mSlides = (Button)findViewById(R.id.slides_button);
 
-		// This is the button to present the pictures slides
+		// This is the button to present the pictures slides - deprecated
 		mSlides = (Button)findViewById(R.id.slides_button);
-		//TODO
-		//!!!!!!!!!!!!!!!!ASK SHAY HOW TO GET NUMBER OF PHOTOS IN ANOTHER CLASS!!!!!!!!!!
-		//!!!!!!!!!!!!!!!!ASK SHAY HOW TO STOP TIMER ONCLICK AND RESUME IT FROM WHERE IT STOPED ON CLICK!!!!!!!!!!!!!!!!
-		//	final int numberOfPhotos = numberPhotos.GetNumberOfPhotos();
 		mSlides.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				slideShowActive = true;
@@ -253,7 +230,7 @@ public class DBRoulette extends Activity {
 			}
 		});
 
-		// (1) Implement a listener
+		// Implementation of a listener
 
 		DiscoveryListener listener = new DiscoveryListener() {
 		    public void onDiscoveryStarted() {
@@ -286,7 +263,7 @@ public class DBRoulette extends Activity {
 		    	}
 		    }
 		};
-		// (2) Create and start a discovery
+		// Creating and starting a discovery
 
 		Discovery discovery = new Discovery();
 		discovery.setDiscoveryListener(listener);
@@ -297,9 +274,6 @@ public class DBRoulette extends Activity {
 		} catch (DiscoveryException e) {
 			e.printStackTrace();
 		} 
-
-		// necessary?
-		//discovery.disable() // Stop discovery
 		
 		// Display the proper UI state if logged in or not
 		setLoggedIn(mApi.getSession().isLinked());
@@ -307,10 +281,13 @@ public class DBRoulette extends Activity {
 	}
 
 	public void startTimer() {
+		
 		//set a new Timer
 		timer = new Timer();
+		
 		//initialize the TimerTask's job
 		initializeTimerTask();
+		
 		//schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
 		timer.schedule(timerTask, 100, 10000); //
 	}
@@ -384,6 +361,7 @@ public class DBRoulette extends Activity {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == NEW_PICTURE) {
+			
 			// return from file upload
 			if (resultCode == Activity.RESULT_OK) {
 				Uri uri = null;
